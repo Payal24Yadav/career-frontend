@@ -1,10 +1,12 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const API = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
   withCredentials: true,
+  timeout: 15000, // 15s timeout
   headers: {
     "Content-Type": "application/json",
   },
@@ -13,6 +15,14 @@ const API = axios.create({
 API.interceptors.request.use(
   (config) => {
     if (typeof window !== "undefined") {
+      // Dynamic self-correction: if running on production (Vercel) but API points to localhost, redirect to Render
+      const hostname = window.location.hostname;
+      if (hostname !== "localhost" && hostname !== "127.0.0.1") {
+        if (config.baseURL?.includes("localhost") || !config.baseURL) {
+          config.baseURL = "https://career-backend-he9u.onrender.com/api";
+        }
+      }
+
       const token = localStorage.getItem("token");
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -26,12 +36,23 @@ API.interceptors.request.use(
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      if (typeof window !== "undefined") {
+    if (typeof window !== "undefined") {
+      if (!error.response) {
+        // Severe Network Outage / ERR_CONNECTION_REFUSED / Timeout
+        toast.error("Network Error: CareerPath server is offline. Please start your backend or try again later.", {
+          id: "network-error-toast",
+          duration: 5000
+        });
+      } else if (error.response.status === 401) {
         localStorage.removeItem("token");
         if (!window.location.pathname.includes('/login')) {
           window.location.href = '/admin/login';
         }
+      } else if (error.response.status >= 500) {
+        toast.error(`Server Error: ${error.response.data?.message || "Internal server exception occurred."}`, {
+          id: "server-500-toast",
+          duration: 4000
+        });
       }
     }
     return Promise.reject(error);
