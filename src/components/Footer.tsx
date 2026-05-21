@@ -25,12 +25,12 @@ const resources = [
   { name: "Mock Test Hub", href: "/mock-tests", badge: "NEW" },
   // { name: "Free CAT Mock 2026", href: "/tools/cat-mock-test", badge: "POPULAR" },
   // { name: "Free JEE Mock 2026", href: "/tools/jee-mock-test", badge: "NEW" },
-  { name: "PYQ Papers", href: "/pyq-papers" },
-  { name: "Resume Score & Audit", href: "/resume-score", badge: "NEW" },
-  { name: "Online Degrees", href: "/online-degree-certification" },
-  { name: "Abroad Education", href: "/inquiry" },
-  { name: "Certifications", href: "/certifications", badge: "NEW" },
-  { name: "Govt Jobs", href: "/govt-jobs" },
+  // { name: "PYQ Papers", href: "/pyq-papers" },
+  // { name: "Resume Score & Audit", href: "/resume-score", badge: "NEW" },
+  // { name: "Online Degrees", href: "/online-degree-certification" },
+  // { name: "Abroad Education", href: "/inquiry" },
+  // { name: "Certifications", href: "/certifications", badge: "NEW" },
+  // { name: "Govt Jobs", href: "/govt-jobs" },
 ];
 
 export default function Footer() {
