@@ -10,6 +10,10 @@ const getBaseURL = () => {
       return "https://career-backend-he9u.onrender.com/api";
     }
   }
+  // Server-side (RSC/SSR) detection for Vercel/Production deployment environments
+  if (process.env.VERCEL === "1" || process.env.NODE_ENV === "production") {
+    return "https://career-backend-he9u.onrender.com/api";
+  }
   return process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 };
 

@@ -1,6 +1,9 @@
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  const apiUrl =
+    process.env.VERCEL === "1" || process.env.NODE_ENV === "production"
+      ? "https://career-backend-he9u.onrender.com/api"
+      : process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
   let blogSlugs: string[] = [];
   try {
