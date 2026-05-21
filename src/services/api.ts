@@ -156,4 +156,16 @@ export const uploadQuestionVideoAPI = (data: FormData) => API.post("/upload/vide
 export const submitMockTestAttemptAPI = (data: any) => API.post("/attempts/submit", data);
 export const getMockTestAttemptAPI = (id: string) => API.get(`/attempts/${id}`);
 
+// PYQ APIs
+export const getPYQsAPI = (params?: string) => API.get(`/pyqs${params ? `?${params}` : ""}`);
+
+// Certification APIs
+export const getCertificationsAPI = (params?: string) => API.get(`/certifications${params ? `?${params}` : ""}`);
+
+// Govt Job APIs
+export const getGovtJobsAPI = (params?: string) => API.get(`/govt-jobs${params ? `?${params}` : ""}`);
+
+// Tool APIs
+export const analyzeResumeAPI = (data: any) => API.post("/tools/resume-analyzer", data);
+
 export default API;
