@@ -3,8 +3,18 @@ import toast from "react-hot-toast";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+const getBaseURL = () => {
+  if (typeof window !== "undefined") {
+    const hostname = window.location.hostname;
+    if (hostname !== "localhost" && hostname !== "127.0.0.1") {
+      return "https://career-backend-he9u.onrender.com/api";
+    }
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+};
+
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+  baseURL: getBaseURL(),
   withCredentials: true,
   timeout: 15000, // 15s timeout
   headers: {
