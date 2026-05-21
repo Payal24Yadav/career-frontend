@@ -114,6 +114,43 @@ export default function BlogContent({ blog }: { blog: Blog }) {
     return stylizedHTML;
   };
 
+  // OBJECT FORMAT RENDERER: handles { introduction, sections: [{heading, paragraph}] }
+  const renderObjectContent = (content: any) => {
+    return (
+      <div className="space-y-8">
+        {content.introduction && (
+          <p className="text-slate-600 font-normal text-base sm:text-lg leading-[1.9] mb-6 pb-4 border-l-4 border-primary/30 pl-5">
+            {content.introduction}
+          </p>
+        )}
+        {Array.isArray(content.sections) && content.sections.map((section: any, i: number) => (
+          <div key={i} className="mb-10">
+            {section.heading && (
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-10 mb-4 pb-3 border-b-2 border-slate-100">
+                {section.heading}
+              </h2>
+            )}
+            {section.paragraph && (
+              <p className="text-slate-600 font-normal text-base sm:text-lg leading-[1.9]">
+                {section.paragraph}
+              </p>
+            )}
+            {Array.isArray(section.points) && (
+              <ul className="my-4 space-y-3 pl-0 list-none">
+                {section.points.map((point: string, j: number) => (
+                  <li key={j} className="flex items-start gap-3 text-slate-600 font-medium text-base sm:text-lg">
+                    <span className="w-2 h-2 rounded-full bg-blue-600 mt-2.5 shrink-0" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   // NEW JSON ARRAY RENDERER
   const renderBlocks = (blocks: any[]) => {
     return blocks.map((block, index) => {
@@ -244,6 +281,8 @@ export default function BlogContent({ blog }: { blog: Blog }) {
                 <article className="max-w-none">
                   {Array.isArray(blog.content) ? (
                     renderBlocks(blog.content)
+                  ) : typeof blog.content === 'object' && blog.content !== null ? (
+                    renderObjectContent(blog.content)
                   ) : (
                     <div dangerouslySetInnerHTML={{ __html: injectUniqueTailwindStyles(blog.content) }} />
                   )}
