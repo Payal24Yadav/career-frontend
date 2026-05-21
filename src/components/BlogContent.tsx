@@ -43,8 +43,16 @@ interface Blog {
 export default function BlogContent({ blog }: { blog: Blog }) {
   
   // HTML TAGS KE ANDAR STRONG TAILWIND STYLING AUTOMATICALLY FORWARD KARNE KA FUNCTION (LEGACY SUPPORT)
-  const injectUniqueTailwindStyles = (htmlContent: string) => {
+  const injectUniqueTailwindStyles = (htmlContent: any) => {
     if (!htmlContent) return "";
+    // If content is not a string (e.g. it's an object stored as Mixed), convert safely
+    if (typeof htmlContent !== "string") {
+      try {
+        return JSON.stringify(htmlContent, null, 2);
+      } catch {
+        return "";
+      }
+    }
 
     let stylizedHTML = htmlContent;
 
